@@ -1,5 +1,6 @@
 //Program with Thingspeak
 //syclops @ Politeknik Kota Kinabalu
+//15 Sept 2016.
 
 #include <ESP8266WiFi.h>
 #include <WiFiConnector.h>
@@ -8,16 +9,19 @@ WiFiConnector *wifi;
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
-#include <ESP_Adafruit_SSD1306.h>
+#include <Adafruit_SSD1306.h>
+#define OLED_RESET LED_BUILTIN
+Adafruit_SSD1306 display(OLED_RESET);
 //#include <DHT.h>
 #include "declare.h"
 //#include "utility.c"
 #include <ArduinoJson.h>
 
-#define WIFI_SSID        "YOUR SSID"
-#define WIFI_PASSPHARSE  "YOUR PWD"
+#define WIFI_SSID        "syclops@4g"
+#define WIFI_PASSPHARSE  "0168187199abc"
 #include "init_wifi.h"
 
 
@@ -48,31 +52,32 @@ void setup()   {
  
 
   // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-  //display.begin(SSD1306_SWITCHCAPVCC, 0x3D);  // initialize with the I2C addr 0x3D (for the 128x64)
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3D (for the 128x64)
   display.begin(SSD1306_SWITCHCAPVCC, 0x78>>1);
   // init done
   
 
   // Clear the buffer.
   display.clearDisplay();
+  display.display();
     
   display.setTextSize(2);
   display.setTextColor(WHITE);
   //display.setTextColor(BLACK, WHITE); // 'inverted' text
   display.setCursor(0,0);
-  display.println("ThingSpeak");
+  display.println("Innovation");
   
   display.setTextSize(3);                                  //Size4 = 5 digit , size3 = 7 digits
   //display.setTextColor(BLACK, WHITE); // 'inverted' text
   display.setTextColor(WHITE);
   display.setCursor(0,18);
-  display.println("Control");
+  display.println("Week");
     
   display.setTextSize(1);
   display.setTextColor(WHITE);
   //display.setTextColor(BLACK, WHITE); // 'inverted' text
-  display.setCursor(0,52);
-  display.println("Version 0.1");
+  display.setCursor(0,50);
+  display.println("7-9 Oct 2016r");
  
   display.display();
   delay(2000);
@@ -208,7 +213,7 @@ void loop() {
       previousMillis = currentMillis;
     
             static const char* host = "api.thingspeak.com";
-            static const char* apiKey = "XIE7DWLDBZZ79S5Q";
+            static const char* apiKey = "API"; // Your API
           
             // Use WiFiClient class to create TCP connections
             WiFiClient client;
@@ -224,7 +229,7 @@ void loop() {
             display.setTextColor(WHITE);
             display.setCursor(0,22);
             
-            url = "/channels/38675/feeds/last";                   
+            url = "/channels/" +channel+"/feeds/last";   //your channel                   
             Serial.print("Requesting URL: ");
             Serial.println(url);
                  

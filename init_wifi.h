@@ -1,3 +1,7 @@
+//Program with Thingspeak
+//syclops @ Politeknik Kota Kinabalu
+//15 Sept 2016.
+
 void init_wifi(uint8_t smartconfig_pin)
 {
    #if defined (WIFI_SSID) && defined (WIFI_PASSPHARSE)
